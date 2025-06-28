@@ -35,7 +35,7 @@ jobs:
     
     - name: Build with pygbag
       run: |
-        pygbag --width 1000 --height 600 --name "刺身たんぽぽゲーム" main.py
+        pygbag --width 1000 --height 600 --app_name "Sashimi Tanpopo Game" main.py
     
     - name: Setup Pages
       uses: actions/configure-pages@v4
