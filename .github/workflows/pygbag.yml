@@ -44,12 +44,12 @@ jobs:
       run: |
         ls -la
         python --version
-        pygbag --help
+        python -c "import pygbag; print('pygbag version:', pygbag.__version__)"
     
     - name: Build with pygbag
       timeout-minutes: 10
       run: |
-        pygbag --width 1000 --height 600 main.py
+        python -m pygbag --width 1000 --height 600 main.py
     
     - name: Setup Pages
       uses: actions/configure-pages@v4
