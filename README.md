@@ -1,5 +1,7 @@
 # 刺身たんぽぽゲーム 🍣🌼
 
+[![Build and Deploy](https://github.com/sasuke9410/sashimi_tanpopo/actions/workflows/pygbag.yml/badge.svg)](https://github.com/sasuke9410/sashimi_tanpopo/actions/workflows/pygbag.yml)
+
 ベルトコンベアで流れる刺身パックにたんぽぽを落として乗せるユニークなアクションゲーム！
 
 ## 🎮 ゲームプレイ
@@ -20,12 +22,12 @@
 
 ### オンラインでプレイ
 GitHub Pagesでブラウザから直接プレイできます：
-**[🎮 ゲームをプレイする](https://your-username.github.io/sashimi_tanpopo/)**
+**[🎮 ゲームをプレイする](https://sasuke9410.github.io/sashimi_tanpopo/)**
 
 ### ローカルでプレイ
 ```bash
 # リポジトリをクローン
-git clone https://github.com/your-username/sashimi_tanpopo.git
+git clone https://github.com/sasuke9410/sashimi_tanpopo.git
 cd sashimi_tanpopo
 
 # 依存関係をインストール
