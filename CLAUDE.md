@@ -65,15 +65,30 @@ python -m pygbag --width 1000 --height 600 --no_opt main.py
 ## デプロイメント
 
 ### GitHub Pages自動デプロイ
-- mainブランチへのプッシュで自動的にGitHub Pagesにデプロイ
+- mainブランチとfeature/github-pages-playブランチへのプッシュで自動的にGitHub Pagesにデプロイ
 - pygbagによるWeb Assembly変換
-- 30分タイムアウト設定でハング問題を回避
+- ubuntu-latest（4 vCPU, 16 GiB）でビルド実行
+- 20分タイムアウト設定でハング問題を回避
 
 ### ビルドプロセス
 1. Python 3.11環境の準備
 2. pygame-ce、pygbag、blackのインストール
-3. pygbagによるWeb版ビルド（--no_optフラグ使用）
+3. pygbagによるWeb版ビルド（--no_opt --verboseフラグ使用）
 4. distディレクトリの成果物をGitHub Pagesにアップロード
+
+### GitHub Actionsの問題解決
+- **タイムアウト問題**: pygbagビルドが異常に時間がかかる問題を解決
+  - **根本原因**: pygbagのWASM変換プロセスが30分以上かかる
+  - **対策**: タイムアウト時間を60分に延長（ステップ側55分）
+  - **キャッシュ**: pip/pygbagキャッシュで2回目以降の高速化
+  - **キープアライブ**: 10秒ごとの出力で無出力タイムアウト防止
+  - **バッファリング無効化**: python -u フラグでリアルタイム出力
+
+### パフォーマンス最適化
+- **現在のスペック**: ubuntu-latestで4 vCPU, 16 GiBが標準提供
+- **pygbagの特性**: バージョンに関係なく30分以上のビルド時間が必要
+- **キャッシュ効果**: 初回ビルド後は依存関係のキャッシュで高速化
+- **追加オプション**: さらなる高速化が必要な場合は8コア版/16コア版も検討可能
 
 ## 開発時の注意事項
 
