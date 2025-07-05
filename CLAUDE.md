@@ -105,3 +105,7 @@ python -m pygbag --width 1000 --height 600 --no_opt main.py
 ### ゲームバランス調整
 - BASE_CONVEYOR_SPEED, BASE_TANPOPO_FALL_SPEED等の定数で基本速度調整
 - LEVEL_UP_SCORE_INTERVAL, MAX_SPEED_MULTIPLIER等で難易度カーブ調整
+
+### Git操作時の注意
+- **プッシュ前に必ず確認**: リモートリポジトリへのプッシュ前にユーザーに確認を求める
+- **除外ファイル**: __pycache__/, build/等のローカルビルドファイルはコミット対象から除外

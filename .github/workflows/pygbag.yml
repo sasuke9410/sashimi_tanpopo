@@ -17,8 +17,8 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60          # ← ここを延長
+    runs-on: ubuntu-latest-8-cores  # 8コア版でさらに高速化
+    timeout-minutes: 0              # タイムアウト無制限
 
     steps:
     - uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
         pip install black pygame-ce pygbag
 
     - name: Build with pygbag
-      timeout-minutes: 55        # ← ステップ側も延長
+      timeout-minutes: 0         # ステップ側もタイムアウト無制限
       run: |
         echo "Starting pygbag build..."
         # 10 秒ごとにドットを出力して無出力タイムアウトを防止
