@@ -77,12 +77,14 @@ python -m pygbag --width 1000 --height 600 --no_opt main.py
 4. distディレクトリの成果物をGitHub Pagesにアップロード
 
 ### GitHub Actionsの問題解決
-- **タイムアウト問題**: pygbagビルドが異常に時間がかかる問題を解決
-  - **根本原因**: pygbagのWASM変換プロセスが30分以上かかる
-  - **対策**: タイムアウト時間を60分に延長（ステップ側55分）
-  - **キャッシュ**: pip/pygbagキャッシュで2回目以降の高速化
-  - **キープアライブ**: 10秒ごとの出力で無出力タイムアウト防止
-  - **バッファリング無効化**: python -u フラグでリアルタイム出力
+- **タイムアウト問題**: pygbagビルドの8時間継続問題を解決
+  - **根本原因**: 不適切なオプション設定とタイムアウト無制限化
+  - **解決策**: 記事に基づいた正しい設定への変更
+    - ワークフロー名: `pygbag_build`（記事推奨）
+    - ビルドコマンド: `python -m pygbag --archive --name sashimi_tanpopo_game .`
+    - タイムアウト: 60分（ジョブ）、50分（ステップ）
+    - デプロイ: `peaceiris/actions-gh-pages@v3`使用
+  - **削除した問題要素**: 8コア版ランナー、タイムアウト無制限、複雑なオプション
 
 ### パフォーマンス最適化
 - **現在のスペック**: ubuntu-latestで4 vCPU, 16 GiBが標準提供
@@ -98,7 +100,7 @@ python -m pygbag --width 1000 --height 600 --no_opt main.py
 - pygame.quit()後のasyncio.sleep(0)呼び出し
 
 ### コード品質
-- black フォーマッターの使用
+- blackフォーマッターの使用
 - Pythonの型ヒントは使用していない
 - 日本語コメントとUI表示
 

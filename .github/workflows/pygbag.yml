@@ -1,4 +1,4 @@
-name: Build and Deploy Pygame Web Game
+name: pygbag_build
 
 on:
   push:
@@ -16,9 +16,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest-8-cores  # 8コア版でさらに高速化
-    timeout-minutes: 0              # タイムアウト無制限
+  pygbag_build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
     - uses: actions/checkout@v4
@@ -28,47 +28,19 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Cache pip & pygbag
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.pygbag
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}-pygbag
-
     - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
         python -m pip install --upgrade pip
-        pip install black pygame-ce pygbag
+        pip install pygame-ce pygbag
 
     - name: Build with pygbag
-      timeout-minutes: 0         # ステップ側もタイムアウト無制限
+      timeout-minutes: 50
       run: |
-        echo "Starting pygbag build..."
-        # 10 秒ごとにドットを出力して無出力タイムアウトを防止
-        (while sleep 10; do echo "::notice file=build::working…"; done) &
-        keepalive=$!
-        python -u -m pygbag --width 1000 --height 600 --no_opt main.py
-        kill $keepalive
-        echo "Build completed"
-        ls -R dist || echo "dist not found"
+        python -m pygbag --archive --name sashimi_tanpopo_game .
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
+    - name: Upload to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/github-pages-play'
       with:
-        path: './dist'
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
